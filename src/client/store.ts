@@ -4,6 +4,7 @@ import { EMPTY, from, map, mapTo, mergeMap, mergeMapTo, Observable, tap } from '
 import { produce } from 'immer';
 import { CartState, CheckoutFormData, Product, ProductShortInfo } from '../common/types';
 import { CartApi, ExampleApi } from './api';
+import { ExampleApiMock } from '../../test/unit/catalog.test';
 
 export interface ApplicationState {
     products?: ProductShortInfo[];
@@ -13,7 +14,7 @@ export interface ApplicationState {
 }
 
 export interface EpicDeps {
-    api: ExampleApi;
+    api: ExampleApi | ExampleApiMock;
     cart: CartApi;
 }
 
@@ -136,7 +137,7 @@ export const rootEpic = combineEpics(
     productDetailsLoadEpic,
 );
 
-export function initStore(api: ExampleApi, cart: CartApi) {
+export function initStore(api: ExampleApi | ExampleApiMock, cart: CartApi) {
     const rootReducer = createRootReducer({
         cart: cart.getState()
     });
